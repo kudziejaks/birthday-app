@@ -7,290 +7,270 @@
   <style>
     :root{--pink:#ff8fc3;--white:#ffffff;--bg:#ffe6f2}
     *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, -apple-system, Arial, sans-serif;background:var(--bg);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-    .app{width:100%;max-width:900px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.95));border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,0.12);overflow:hidden}
+    body{font-family:Inter, system-ui, Arial, sans-serif;background:var(--bg);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .app{width:100%;max-width:1100px;background:#fff;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,0.12);overflow:hidden}
     header{padding:28px 30px;background:linear-gradient(90deg,var(--pink),#ffd6e8);color:#4a1033}
     header h1{margin:0;font-size:1.6rem}
-    .grid{display:grid;grid-template-columns:1fr 420px;gap:24px;padding:24px}
-    .left{padding:12px}
-    .card{background:var(--white);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px}
+    .card{background:#ffffff;border-radius:12px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,0.06);margin-bottom:16px}
     label{display:block;margin-top:12px;font-size:0.9rem}
-    input[type=text],input[type=number],input[type=password],select{width:100%;padding:10px;border-radius:8px;border:1px solid #e3d0db;margin-top:6px}
+    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e3d0db;margin-top:6px}
     button{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;background:var(--pink);color:#4a1033;font-weight:700;cursor:pointer}
-    #status{margin-top:12px;font-weight:700}
-    .small{font-size:0.9rem;color:#6a4a61}
     .guest-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .guest{background:#fff0f6;padding:6px 10px;border-radius:999px;border:1px solid #ffd9ec}
-    .right{padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-    .welcome{font-size:1.1rem;margin-bottom:8px}
-    .big{font-size:1.3rem;font-weight:800}
-    .controls{display:flex;gap:8px;margin-top:12px}
-    .muted{opacity:0.6}
-    .confetti{position:absolute;pointer-events:none;inset:0;overflow:hidden}
     .hidden{display:none}
+    .admin-box div{margin:4px 0;font-size:0.9rem}
     footer{padding:12px;text-align:center;color:#6a4a61}
-    @media (max-width:880px){.grid{grid-template-columns:1fr;}.right{order:-1}}
   </style>
 </head>
 <body>
-  <div class="app" id="app">
-    <header>
-      <h1>Welcome to TotallySam's Birthday Bash!</h1>
-      <div class="small">Only guests aged <strong>15–20</strong> wearing <strong>pink or white</strong> can enter.</div>
-    </header>
 
-    <div class="grid">
-      <div class="left">
-        <div class="card" id="loginCard">
-          <h2>Login</h2>
-          <div class="small">Use your name from the guest list to login. This demo stores session locally on your browser.</div>
+<div class="app">
+<header>
+  <h1>Welcome to TotallySam's Birthday Bash!</h1>
+  <div class="small">Age allowed: 15–20 • Dress code: Pink or White • Only invited guests allowed</div>
+</header>
 
-          <label for="loginName">Name</label>
-          <input type="text" id="loginName" placeholder="Enter your name (e.g. Tino)" autocomplete="off" />
+<div class="grid">
+  <!-- LEFT SIDE -->
+  <div>
+    <div class="card">
+      <h2>Login</h2>
 
-          <label for="loginPass">Password</label>
-          <input type="password" id="loginPass" placeholder="App password" autocomplete="off" />
+      <label>Name</label>
+      <input type="text" id="loginName" placeholder="Enter your name" />
 
-          <button id="loginBtn">Login</button>
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="App password" />
 
-          <p id="status" class="muted">Not logged in</p>
+      <button id="loginBtn">Login</button>
 
-          <hr />
+      <p id="status">Not logged in</p>
 
-          <h3>Guest list</h3>
-          <div class="guest-list" id="guestList"></div>
-        </div>
-
-        <div class="card" style="margin-top:14px">
-          <h3>About</h3>
-          <p class="small">This is a client-side demo app. If you want a real production app (database, secure auth), I can help convert this to use a backend later.</p>
-          <p class="small">To try: login as a guest on the list, enter an age between 15 and 20 and choose pink or white when prompted on entry.</p>
-        </div>
-      </div>
-
-      <div class="right">
-        <div class="card" id="entryCard">
-          <div class="welcome">You're visiting: <span id="visitorName">—</span></div>
-          <div class="small">Age allowed: <strong>15–20</strong></div>
-
-          <label for="age">Age</label>
-          <input type="number" id="age" min="10" max="30" placeholder="Enter your age" />
-
-          <label for="wear">Wearing</label>
-          <select id="wear">
-            <option value="">Select...</option>
-            <option value="pink">Pink</option>
-            <option value="white">White</option>
-            <option value="pink_white">Pink & White</option>
-            <option value="other">Other</option>
-          </select>
-
-          <div class="controls">
-            <button id="enterBtn">Try Enter</button>
-            <button id="logoutBtn" class="muted hidden">Logout</button>
-          </div>
-
-          <p id="entryMsg"></p>
-        </div>
-
-        <div class="card" style="width:100%;margin-top:12px;text-align:center">
-          <div class="big">Party Status</div>
-          <div id="partyStatus" class="small muted">Waiting for guests...</div>
-        </div>
-      </div>
+      <h3>Guest List</h3>
+      <div id="guestList" class="guest-list"></div>
     </div>
 
-    <div class="confetti" id="confetti"></div>
-    <footer>Made with 💖 — TotallySam's Birthday Bash</footer>
+    <!-- ADMIN PANEL -->
+    <div class="card">
+      <h2>Admin — Invitation Responses</h2>
+      <div class="admin-box">
+        <strong>Accepted:</strong>
+        <div id="acceptedList"></div>
+
+        <strong>Denied:</strong>
+        <div id="deniedList"></div>
+
+        <strong>Cancelled:</strong>
+        <div id="cancelledList"></div>
+      </div>
+    </div>
   </div>
 
-  <script>
-    // Allowed guest names (exactly as requested)
-    const allowedNames = [
-      'Tino','Camilla','Jeanelle','Maria','Kelly','Primily','Blessing','Days','Tanatwsa','Candice','Prince'
-    ];
+  <!-- RIGHT SIDE -->
+  <div>
+    <div class="card">
+      <h2>Entry Check</h2>
+      <p>You are logged in as: <strong id="visitorName">—</strong></p>
 
-    // Simple app-password (demo). In a real app you'd use secure auth.
-    const APP_PASSWORD = 'party2025';
+      <label>Age</label>
+      <input type="number" id="age" />
 
-    // DOM refs
-    const guestListEl = document.getElementById('guestList');
-    const loginBtn = document.getElementById('loginBtn');
-    const loginNameEl = document.getElementById('loginName');
-    const loginPassEl = document.getElementById('loginPass');
-    const statusEl = document.getElementById('status');
-    const visitorNameEl = document.getElementById('visitorName');
-    const ageEl = document.getElementById('age');
-    const wearEl = document.getElementById('wear');
-    const enterBtn = document.getElementById('enterBtn');
-    const entryMsg = document.getElementById('entryMsg');
-    const partyStatus = document.getElementById('partyStatus');
-    const logoutBtn = document.getElementById('logoutBtn');
+      <label>Wearing</label>
+      <select id="wear">
+        <option value="">Select…</option>
+        <option value="pink">Pink</option>
+        <option value="white">White</option>
+        <option value="pink_white">Pink & White</option>
+      </select>
 
-    // Populate guest list UI
-    allowedNames.forEach(n => {
-      const span = document.createElement('span');
-      span.className = 'guest';
-      span.textContent = n;
-      guestListEl.appendChild(span);
-    });
+      <button id="enterBtn">Try Enter</button>
+      <button id="logoutBtn" class="hidden">Logout</button>
 
-    // Simple session using localStorage
-    function saveSession(name){
-      localStorage.setItem('birthday_session', JSON.stringify({name, ts:Date.now()}));
-    }
-    function clearSession(){
-      localStorage.removeItem('birthday_session');
-    }
-    function getSession(){
-      try{ return JSON.parse(localStorage.getItem('birthday_session')); }catch(e){return null}
-    }
+      <p id="entryMsg"></p>
+    </div>
 
-    // On load, restore session
-    function restore(){
-      const s = getSession();
-      if(s && allowedNames.includes(s.name)){
-        setLoggedIn(s.name);
-      }else{
-        setLoggedOut();
-      }
-    }
+    <div class="card">
+      <h2>RSVP — Invitation Response</h2>
+      <button id="acceptBtn">Accept Invite</button>
+      <button id="denyBtn">Deny Invite</button>
+      <button id="cancelBtn" class="hidden">Cancel Acceptance</button>
+      <p id="rsvpMsg"></p>
+    </div>
+  </div>
+</div>
 
-    function setLoggedIn(name){
-      statusEl.textContent = 'Logged in as ' + name;
-      statusEl.style.color = '#2b6b3a';
-      visitorNameEl.textContent = name;
-      logoutBtn.classList.remove('hidden');
-      saveSession(name);
-    }
-    function setLoggedOut(){
-      statusEl.textContent = 'Not logged in';
-      statusEl.style.color = '';
-      visitorNameEl.textContent = '—';
-      logoutBtn.classList.add('hidden');
-      clearSession();
-    }
+<footer>Made with ❤️ by TotallySam</footer>
+</div>
 
-    loginBtn.addEventListener('click', ()=>{
-      const name = loginNameEl.value.trim();
-      const pass = loginPassEl.value;
-      if(!name){ alert('Please enter your name'); return; }
+<script>
+// FINAL GUEST LIST
+const allowedNames = [
+  'Tino','Camilla','Jeanelle','Maria','Kelly','Primily','Blessing','Days',
+  'Tanatwsa','Candice','Prince','Maka','FIRM','Stra','Kudakwashe','Angel',
+  'Shumie','Tawana','Tadiwa','Sky','Ashley','Chiko','Tatenda','Samantha','Kudzi'
+];
 
-      if(!allowedNames.includes(name)){
-        alert('This name is not on the guest list.');
-        return;
-      }
-      if(pass !== APP_PASSWORD){
-        alert('Wrong password. (Hint: ask the host)');
-        return;
-      }
+// Demo password
+const APP_PASSWORD = 'party2025';
 
-      setLoggedIn(name);
-      partyStatus.textContent = name + ' joined the app!';
-    });
+// DOM references
+const guestListEl = document.getElementById('guestList');
+const loginBtn = document.getElementById('loginBtn');
+const loginNameEl = document.getElementById('loginName');
+const loginPassEl = document.getElementById('loginPass');
+const statusEl = document.getElementById('status');
+const visitorNameEl = document.getElementById('visitorName');
+const logoutBtn = document.getElementById('logoutBtn');
+const entryMsg = document.getElementById('entryMsg');
+const ageEl = document.getElementById('age');
+const wearEl = document.getElementById('wear');
+const enterBtn = document.getElementById('enterBtn');
 
-    logoutBtn.addEventListener('click', ()=>{
-      setLoggedOut();
-      partyStatus.textContent = 'Guest logged out.';
-    });
+// RSVP
+const acceptBtn = document.getElementById('acceptBtn');
+const denyBtn = document.getElementById('denyBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+const rsvpMsg = document.getElementById('rsvpMsg');
 
-    enterBtn.addEventListener('click', ()=>{
-      const session = getSession();
-      if(!session || !session.name){ alert('You must be logged in to try enter.'); return; }
+const acceptedList = document.getElementById('acceptedList');
+const deniedList   = document.getElementById('deniedList');
+const cancelledList = document.getElementById('cancelledList');
 
-      const name = session.name;
-      const age = parseInt(ageEl.value,10);
-      const wear = wearEl.value;
+// Populate guest tags
+allowedNames.forEach(n=>{
+  let s=document.createElement('span');
+  s.className='guest';
+  s.textContent=n;
+  guestListEl.appendChild(s);
+});
 
-      // Validate
-      if(Number.isNaN(age)){
-        entryMsg.textContent = 'Enter your age.'; entryMsg.style.color='red'; return;
-      }
-      if(age < 15 || age > 20){
-        entryMsg.textContent = 'Age not allowed. Only 15–20 can enter.'; entryMsg.style.color='red'; return;
-      }
-      if(!(wear === 'pink' || wear === 'white' || wear === 'pink_white')){
-        entryMsg.textContent = 'Dress code failed. Only pink or white allowed.'; entryMsg.style.color='red'; return;
-      }
+// RSVP data stored locally
+function loadRSVP(){
+  return JSON.parse(localStorage.getItem('rsvp_data')||'{}');
+}
+function saveRSVP(data){
+  localStorage.setItem('rsvp_data',JSON.stringify(data));
+}
+function updateAdminView(){
+  const data = loadRSVP();
+  acceptedList.textContent = Object.keys(data).filter(k=>data[k]==='accepted').join(', ');
+  deniedList.textContent = Object.keys(data).filter(k=>data[k]==='denied').join(', ');
+  cancelledList.textContent = Object.keys(data).filter(k=>data[k]==='cancelled').join(', ');
+}
 
-      // Access granted
-      entryMsg.textContent = `Access granted! Welcome to the party, ${name}! 🎉`;
-      entryMsg.style.color = 'green';
-      partyStatus.textContent = name + ' entered the party — let the celebration begin!';
+// Login session
+function saveSession(name){
+  localStorage.setItem('session',name);
+}
+function getSession(){
+  return localStorage.getItem('session');
+}
+function clearSession(){
+  localStorage.removeItem('session');
+}
 
-      // Play celebration sound and show confetti
-      playCelebration();
-      burstConfetti(120);
-    });
+// Set login state
+function setLoggedIn(name){
+  statusEl.textContent = "Logged in as " + name;
+  visitorNameEl.textContent = name;
+  logoutBtn.classList.remove('hidden');
+  saveSession(name);
 
-    // Simple celebration using WebAudio (no external files)
-    function playCelebration(){
-      try{
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        // Play a quick happy arpeggio
-        const freqs = [523.25, 659.25, 783.99]; // C5, E5, G5
-        let now = ctx.currentTime;
-        freqs.forEach((f,i)=>{
-          const o = ctx.createOscillator();
-          const g = ctx.createGain();
-          o.type = 'sine';
-          o.frequency.value = f;
-          g.gain.value = 0.001;
-          o.connect(g);
-          g.connect(ctx.destination);
-          g.gain.linearRampToValueAtTime(0.12, now + 0.01 + i*0.05);
-          g.gain.exponentialRampToValueAtTime(0.001, now + 0.6 + i*0.05);
-          o.start(now + i*0.05);
-          o.stop(now + 0.7 + i*0.05);
-        });
+  // Show cancel button if they had accepted
+  const r = loadRSVP()[name];
+  cancelBtn.classList.toggle('hidden', r!=='accepted');
+}
+function setLoggedOut(){
+  statusEl.textContent = "Not logged in";
+  visitorNameEl.textContent = "—";
+  logoutBtn.classList.add('hidden');
+  clearSession();
+}
 
-        // small sparkle noise
-        const bufferSize = 2 * ctx.sampleRate;
-        const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for(let i=0;i<bufferSize;i++) output[i] = (Math.random()*2-1) * Math.exp(-i / (ctx.sampleRate*0.5));
-        const noise = ctx.createBufferSource();
-        noise.buffer = noiseBuffer;
-        const ng = ctx.createGain(); ng.gain.value = 0.04;
-        noise.connect(ng); ng.connect(ctx.destination);
-        noise.start(now);
-      }catch(e){ console.warn('Audio blocked or not supported', e); }
-    }
+// Restore session on page load
+if(getSession() && allowedNames.includes(getSession())){
+  setLoggedIn(getSession());
+}
 
-    // Confetti: simple particle system
-    function burstConfetti(count=80){
-      const container = document.getElementById('confetti');
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'confetti-piece';
-        const size = Math.floor(Math.random()*10)+6;
-        el.style.position='absolute';
-        el.style.width = size+'px';
-        el.style.height = (size*0.6)+'px';
-        el.style.left = (Math.random()*100)+'%';
-        el.style.top = (-10 - Math.random()*10)+'%';
-        el.style.opacity = 1;
-        el.style.transform = 'rotate('+ (Math.random()*360) +'deg)';
-        el.style.borderRadius = '2px';
-        el.style.background = Math.random()>0.5 ? 'pink' : 'white';
-        el.style.zIndex = 9999;
-        container.appendChild(el);
+// Login button
+loginBtn.onclick = () => {
+  let name = loginNameEl.value.trim();
+  let pass = loginPassEl.value;
+  if(!allowedNames.includes(name)){ alert("Not on guest list"); return; }
+  if(pass !== APP_PASSWORD){ alert("Wrong password"); return; }
+  setLoggedIn(name);
+};
 
-        // animate
-        const duration = 3000 + Math.random()*2000;
-        const endX = (Math.random()*200 - 100);
-        el.animate([
-          {transform: `translate3d(0,0,0) rotate(${Math.random()*360}deg)`, opacity:1},
-          {transform: `translate3d(${endX}px,${400+Math.random()*200}px,0) rotate(${Math.random()*720}deg)`, opacity:0}
-        ],{duration, easing:'cubic-bezier(.17,.67,.83,.67)'}).onfinish = ()=> el.remove();
-      }
-    }
+// Logout
+logoutBtn.onclick = ()=>{
+  setLoggedOut();
+};
 
-    // Restore session on start
-    restore();
+// Entry check
+enterBtn.onclick = ()=>{
+  let name = getSession();
+  if(!name){ entryMsg.textContent="Login first"; return; }
 
-    // Expose for debugging in devtools
-    window._birthday = {allowedNames, getSession, clearSession, saveSession};
-  </script>
+  let age = Number(ageEl.value);
+  let wear = wearEl.value;
+
+  if(age < 15 || age > 20){
+    entryMsg.textContent="Age not allowed.";
+    entryMsg.style.color="red";
+    return;
+  }
+  if(!(wear==='pink'||wear==='white'||wear==='pink_white')){
+    entryMsg.textContent="Dress code failed.";
+    entryMsg.style.color="red";
+    return;
+  }
+
+  entryMsg.textContent="Access granted! 🎉";
+  entryMsg.style.color="green";
+};
+
+// RSVP actions
+acceptBtn.onclick = ()=>{
+  const n = getSession();
+  if(!n){ rsvpMsg.textContent="Login first"; return; }
+
+  let data = loadRSVP();
+  data[n] = "accepted";
+  saveRSVP(data);
+  updateAdminView();
+
+  rsvpMsg.textContent="You have accepted the invitation! 🎉";
+  cancelBtn.classList.remove('hidden');
+};
+
+denyBtn.onclick = ()=>{
+  const n = getSession();
+  if(!n){ rsvpMsg.textContent="Login first"; return; }
+
+  let data = loadRSVP();
+  data[n] = "denied";
+  saveRSVP(data);
+  updateAdminView();
+
+  rsvpMsg.textContent="You have denied the invitation.";
+  cancelBtn.classList.add('hidden');
+};
+
+cancelBtn.onclick = ()=>{
+  const n = getSession();
+  let data = loadRSVP();
+  data[n] = "cancelled";
+  saveRSVP(data);
+  updateAdminView();
+
+  rsvpMsg.textContent="Your acceptance has been cancelled.";
+  cancelBtn.classList.add('hidden');
+};
+
+// Initialize admin view
+updateAdminView();
+</script>
+
 </body>
 </html>
