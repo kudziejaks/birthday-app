@@ -1,81 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TotallySam's Birthday Bash — App</title>
-  <style>
-    :root{--pink:#ff8fc3;--white:#ffffff;--bg:#ffe6f2}
-    *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, Arial, sans-serif;background:var(--bg);margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-    .app{width:100%;max-width:1100px;background:#fff;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,0.12);overflow:hidden}
-    header{padding:28px 30px;background:linear-gradient(90deg,var(--pink),#ffd6e8);color:#4a1033}
-    header h1{margin:0;font-size:1.6rem}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px}
-    .card{background:#ffffff;border-radius:12px;padding:18px;box-shadow:0 6px 16px rgba(0,0,0,0.06);margin-bottom:16px}
-    label{display:block;margin-top:12px;font-size:0.9rem}
-    input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e3d0db;margin-top:6px}
-    button{margin-top:14px;padding:10px 14px;border-radius:10px;border:none;background:var(--pink);color:#4a1033;font-weight:700;cursor:pointer}
-    .guest-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .guest{background:#fff0f6;padding:6px 10px;border-radius:999px;border:1px solid #ffd9ec}
-    .hidden{display:none}
-    .admin-box div{margin:4px 0;font-size:0.9rem}
-    footer{padding:12px;text-align:center;color:#6a4a61}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TotallySam's Birthday Bash — App</title>
+<style>
+:root {
+  --pink:#ff8fc3;
+  --white:#ffffff;
+  --glitter-blue:#85d7ff;
+  --bg:#ffe6f2;
+  --glitter-gradient: linear-gradient(45deg, #85d7ff 0%, #a1e3ff 50%, #c2f0ff 100%);
+}
+*{box-sizing:border-box}
+body {
+  font-family:Inter, system-ui, Arial, sans-serif;
+  background: var(--bg);
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* glitter overlay */
+body::after {
+  content:"";
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: url('https://i.ibb.co/dK5mYtZ/glitter.png') repeat;
+  pointer-events:none;
+  opacity:0.2;
+  animation: sparkle 20s linear infinite;
+}
+@keyframes sparkle{
+  0%{background-position:0 0;}
+  100%{background-position:1000px 1000px;}
+}
+
+.app{
+  width:100%;
+  max-width:1100px;
+  background:var(--white);
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,0.12);
+  overflow:hidden;
+}
+
+header{
+  padding:28px 30px;
+  background: linear-gradient(90deg,var(--pink),var(--glitter-blue));
+  color:#4a1033;
+  text-shadow: 1px 1px 2px #fff;
+}
+
+header h1{margin:0;font-size:1.6rem}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px}
+
+.card{
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.1);
+  background-image: var(--glitter-gradient);
+  background-blend-mode: overlay;
+  color:#4a1033;
+}
+
+label{display:block;margin-top:12px;font-size:0.9rem}
+input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #e3d0db;margin-top:6px}
+
+button{
+  margin-top:14px;
+  padding:10px 14px;
+  border-radius:10px;
+  border:none;
+  background: linear-gradient(45deg, var(--pink), var(--glitter-blue));
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover{
+  transform: scale(1.05);
+  box-shadow:0 4px 20px rgba(0,0,0,0.2);
+}
+
+.guest-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.guest{
+  background:#fff0f6;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid #ffd9ec;
+  transition: all 0.3s ease;
+}
+.guest:hover{color:var(--glitter-blue); font-weight:700;}
+
+.hidden{display:none}
+
+.admin-box div{margin:4px 0;font-size:0.9rem}
+
+footer{padding:12px;text-align:center;color:#6a4a61}
+
+@media(max-width:880px){
+  .grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
 
 <div class="app">
 <header>
   <h1>Welcome to TotallySam's Birthday Bash!</h1>
-  <div class="small">Age allowed: 15–20 • Dress code: Pink or White • Only invited guests allowed</div>
+  <div class="small">Age allowed: 15–20 • Dress code: Pink or White • Only invited guests</div>
 </header>
 
 <div class="grid">
-  <!-- LEFT SIDE -->
+  <!-- LEFT -->
   <div>
     <div class="card">
       <h2>Login</h2>
-
       <label>Name</label>
       <input type="text" id="loginName" placeholder="Enter your name" />
-
       <label>Password</label>
       <input type="password" id="loginPass" placeholder="App password" />
-
       <button id="loginBtn">Login</button>
-
       <p id="status">Not logged in</p>
 
       <h3>Guest List</h3>
       <div id="guestList" class="guest-list"></div>
+
+      <button id="adminBtn">Admin Login</button>
     </div>
 
-    <!-- ADMIN PANEL -->
-    <div class="card">
+    <div class="card hidden" id="adminPanel">
       <h2>Admin — Invitation Responses</h2>
       <div class="admin-box">
-        <strong>Accepted:</strong>
-        <div id="acceptedList"></div>
-
-        <strong>Denied:</strong>
-        <div id="deniedList"></div>
-
-        <strong>Cancelled:</strong>
-        <div id="cancelledList"></div>
+        <strong>Accepted:</strong><div id="acceptedList"></div>
+        <strong>Denied:</strong><div id="deniedList"></div>
+        <strong>Cancelled:</strong><div id="cancelledList"></div>
+        <button id="closeAdminBtn">Close Admin Panel</button>
       </div>
     </div>
   </div>
 
-  <!-- RIGHT SIDE -->
+  <!-- RIGHT -->
   <div>
     <div class="card">
       <h2>Entry Check</h2>
       <p>You are logged in as: <strong id="visitorName">—</strong></p>
-
       <label>Age</label>
       <input type="number" id="age" />
-
       <label>Wearing</label>
       <select id="wear">
         <option value="">Select…</option>
@@ -83,10 +163,8 @@
         <option value="white">White</option>
         <option value="pink_white">Pink & White</option>
       </select>
-
       <button id="enterBtn">Try Enter</button>
       <button id="logoutBtn" class="hidden">Logout</button>
-
       <p id="entryMsg"></p>
     </div>
 
@@ -104,17 +182,17 @@
 </div>
 
 <script>
-// FINAL GUEST LIST
+// GUEST LIST
 const allowedNames = [
   'Tino','Camilla','Jeanelle','Maria','Kelly','Primily','Blessing','Days',
   'Tanatwsa','Candice','Prince','Maka','FIRM','Stra','Kudakwashe','Angel',
   'Shumie','Tawana','Tadiwa','Sky','Ashley','Chiko','Tatenda','Samantha','Kudzi'
 ];
 
-// Demo password
 const APP_PASSWORD = 'party2025';
+const ADMIN_PASSWORD = 'birthdayboss';
 
-// DOM references
+// DOM
 const guestListEl = document.getElementById('guestList');
 const loginBtn = document.getElementById('loginBtn');
 const loginNameEl = document.getElementById('loginName');
@@ -126,18 +204,18 @@ const entryMsg = document.getElementById('entryMsg');
 const ageEl = document.getElementById('age');
 const wearEl = document.getElementById('wear');
 const enterBtn = document.getElementById('enterBtn');
-
-// RSVP
 const acceptBtn = document.getElementById('acceptBtn');
 const denyBtn = document.getElementById('denyBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const rsvpMsg = document.getElementById('rsvpMsg');
-
+const adminBtn = document.getElementById('adminBtn');
+const adminPanel = document.getElementById('adminPanel');
+const closeAdminBtn = document.getElementById('closeAdminBtn');
 const acceptedList = document.getElementById('acceptedList');
-const deniedList   = document.getElementById('deniedList');
+const deniedList = document.getElementById('deniedList');
 const cancelledList = document.getElementById('cancelledList');
 
-// Populate guest tags
+// populate guest tags
 allowedNames.forEach(n=>{
   let s=document.createElement('span');
   s.className='guest';
@@ -145,13 +223,9 @@ allowedNames.forEach(n=>{
   guestListEl.appendChild(s);
 });
 
-// RSVP data stored locally
-function loadRSVP(){
-  return JSON.parse(localStorage.getItem('rsvp_data')||'{}');
-}
-function saveRSVP(data){
-  localStorage.setItem('rsvp_data',JSON.stringify(data));
-}
+// RSVP data
+function loadRSVP(){return JSON.parse(localStorage.getItem('rsvp_data')||'{}');}
+function saveRSVP(data){localStorage.setItem('rsvp_data',JSON.stringify(data));}
 function updateAdminView(){
   const data = loadRSVP();
   acceptedList.textContent = Object.keys(data).filter(k=>data[k]==='accepted').join(', ');
@@ -159,41 +233,29 @@ function updateAdminView(){
   cancelledList.textContent = Object.keys(data).filter(k=>data[k]==='cancelled').join(', ');
 }
 
-// Login session
-function saveSession(name){
-  localStorage.setItem('session',name);
-}
-function getSession(){
-  return localStorage.getItem('session');
-}
-function clearSession(){
-  localStorage.removeItem('session');
-}
+// SESSION
+function saveSession(name){localStorage.setItem('session',name);}
+function getSession(){return localStorage.getItem('session');}
+function clearSession(){localStorage.removeItem('session');}
 
-// Set login state
 function setLoggedIn(name){
   statusEl.textContent = "Logged in as " + name;
   visitorNameEl.textContent = name;
   logoutBtn.classList.remove('hidden');
   saveSession(name);
-
-  // Show cancel button if they had accepted
   const r = loadRSVP()[name];
   cancelBtn.classList.toggle('hidden', r!=='accepted');
 }
+
 function setLoggedOut(){
   statusEl.textContent = "Not logged in";
   visitorNameEl.textContent = "—";
   logoutBtn.classList.add('hidden');
-  clearSession();
 }
 
-// Restore session on page load
-if(getSession() && allowedNames.includes(getSession())){
-  setLoggedIn(getSession());
-}
+if(getSession() && allowedNames.includes(getSession())){setLoggedIn(getSession());}
 
-// Login button
+// LOGIN
 loginBtn.onclick = () => {
   let name = loginNameEl.value.trim();
   let pass = loginPassEl.value;
@@ -202,44 +264,26 @@ loginBtn.onclick = () => {
   setLoggedIn(name);
 };
 
-// Logout
-logoutBtn.onclick = ()=>{
-  setLoggedOut();
-};
+logoutBtn.onclick = ()=>{setLoggedOut();};
 
-// Entry check
 enterBtn.onclick = ()=>{
   let name = getSession();
   if(!name){ entryMsg.textContent="Login first"; return; }
-
   let age = Number(ageEl.value);
   let wear = wearEl.value;
-
-  if(age < 15 || age > 20){
-    entryMsg.textContent="Age not allowed.";
-    entryMsg.style.color="red";
-    return;
-  }
-  if(!(wear==='pink'||wear==='white'||wear==='pink_white')){
-    entryMsg.textContent="Dress code failed.";
-    entryMsg.style.color="red";
-    return;
-  }
-
+  if(age < 15 || age > 20){ entryMsg.textContent="Age not allowed."; entryMsg.style.color="red"; return; }
+  if(!(wear==='pink'||wear==='white'||wear==='pink_white')){ entryMsg.textContent="Dress code failed."; entryMsg.style.color="red"; return; }
   entryMsg.textContent="Access granted! 🎉";
   entryMsg.style.color="green";
 };
 
-// RSVP actions
+// RSVP
 acceptBtn.onclick = ()=>{
   const n = getSession();
   if(!n){ rsvpMsg.textContent="Login first"; return; }
-
   let data = loadRSVP();
-  data[n] = "accepted";
+  data[n]="accepted";
   saveRSVP(data);
-  updateAdminView();
-
   rsvpMsg.textContent="You have accepted the invitation! 🎉";
   cancelBtn.classList.remove('hidden');
 };
@@ -247,12 +291,9 @@ acceptBtn.onclick = ()=>{
 denyBtn.onclick = ()=>{
   const n = getSession();
   if(!n){ rsvpMsg.textContent="Login first"; return; }
-
   let data = loadRSVP();
-  data[n] = "denied";
+  data[n]="denied";
   saveRSVP(data);
-  updateAdminView();
-
   rsvpMsg.textContent="You have denied the invitation.";
   cancelBtn.classList.add('hidden');
 };
@@ -260,16 +301,22 @@ denyBtn.onclick = ()=>{
 cancelBtn.onclick = ()=>{
   const n = getSession();
   let data = loadRSVP();
-  data[n] = "cancelled";
+  data[n]="cancelled";
   saveRSVP(data);
-  updateAdminView();
-
   rsvpMsg.textContent="Your acceptance has been cancelled.";
   cancelBtn.classList.add('hidden');
 };
 
-// Initialize admin view
-updateAdminView();
+// ADMIN
+adminBtn.onclick = ()=>{
+  let pw = prompt("Enter admin password:");
+  if(pw === ADMIN_PASSWORD){
+    updateAdminView();
+    adminPanel.classList.remove('hidden');
+  } else { alert("Wrong admin password"); }
+};
+
+closeAdminBtn.onclick = ()=>{adminPanel.classList.add('hidden');};
 </script>
 
 </body>
